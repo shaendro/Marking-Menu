@@ -6,8 +6,8 @@ import {
 describe('createPEventFromMouseEvent', () => {
   it('creates a pointer event from a mouse event', () => {
     const mouseEvt = {
-      clientX: 10,
-      clientY: 20,
+      offsetX: 10,
+      offsetY: 20,
       timeStamp: 1980
     };
     expect(createPEventFromMouseEvent(mouseEvt)).toEqual({
@@ -25,9 +25,9 @@ describe('createPEventFromTouchEvent', () => {
       // Use an object instead of an array because it needs to work with
       // array-like objects (TouchEvent#targetTouches is not an array).
       targetTouches: {
-        0: { clientX: 23, clientY: 12 },
-        1: { clientX: 0, clientY: 2 },
-        2: { clientX: 10, clientY: 4 },
+        0: { offsetX: 23, offsetY: 12 },
+        1: { offsetX: 0, offsetY: 2 },
+        2: { offsetX: 10, offsetY: 4 },
         length: 3
       },
       timeStamp: 1990

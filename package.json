@@ -1,6 +1,6 @@
 {
-  "name": "marking-menu",
-  "version": "0.9.0",
+  "name": "@shaendro/marking-menu",
+  "version": "0.9.1",
   "description": "Marking Menu Implementation in JavaScript.",
   "main": "marking-menu.js",
   "files": [
@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/QuentinRoy/Marking-Menu.git"
+    "url": "https://github.com/shaendro/Marking-Menu"
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test jest",
@@ -22,12 +22,10 @@
     "prepare": "yarn build && yarn copy-demo-files",
     "release": "standard-version",
     "lint": "eslint src",
-    "git-hook": "yarn lint && yarn test",
-    "precommit": "yarn git-hook",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "serve": "serve demo"
   },
-  "author": "Quentin Roy <quentin@quentinroy.fr>",
+  "author": "Paul Lonauer <p.lonauer@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
     "rxjs": "^6.0.0"
