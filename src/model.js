@@ -1,6 +1,6 @@
 import { deltaAngle } from './utils';
 
-const getAngleRange = items => (items.length > 4 ? 45 : 90);
+const getAngleRange = items => (360 / items.length);
 
 /**
  * Represents an item of the Marking Menu.
@@ -17,7 +17,7 @@ export class MMItem {
   constructor(id, name, angle, { parent, children } = {}) {
     this.id = id;
     this.name = name;
-    this.angle = angle;
+		this.angle = angle;
     this.children = children;
     this.parent = parent;
   }

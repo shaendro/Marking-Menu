@@ -1,6 +1,6 @@
 {
   "name": "@shaendro/marking-menu",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Marking Menu Implementation in JavaScript.",
   "main": "marking-menu.js",
   "files": [
@@ -22,7 +22,6 @@
     "prepare": "yarn build && yarn copy-demo-files",
     "release": "standard-version",
     "lint": "eslint src",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
     "serve": "serve demo"
   },
   "author": "Paul Lonauer <p.lonauer@gmail.com>",

@@ -45,10 +45,9 @@ export default (
   };
 
   const openMenu = (model, position) => {
-    const cbr = parentDOM.getBoundingClientRect();
     menu = createMenuLayout(parentDOM, model, [
-      position[0] - cbr.left,
-      position[1] - cbr.top
+      position[0],
+      position[1]
     ]);
   };
 
