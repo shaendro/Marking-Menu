@@ -97,7 +97,7 @@ const recursivelyCreateModelItems = (
       const mmItem = new MMItem(
         item.id == null ? stdId : item.id,
         typeof item === 'string' ? item : item.name,
-        i * angleRange,
+        i * angleRange - 90,
         { parent }
       );
       // Add its children if any.

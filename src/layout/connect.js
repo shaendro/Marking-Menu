@@ -15,6 +15,7 @@ import rafThrottle from 'raf-throttle';
  * movements.
  * @param {Function} createGestureFeedback - Create gesture feedback.
  * @param {{error}} log - Logger.
+ * @param {Function} isActive - A function determining the state of the marking menu.
  * @return {Observable} `navigation$` with menu opening and closing side effects.
  */
 export default (
@@ -24,7 +25,8 @@ export default (
   createUpperStrokeCanvas,
   createLowerStrokeCanvas,
   createGestureFeedback,
-  log
+  log,
+  isActive
 ) => {
   // The menu object.
   let menu = null;
@@ -52,17 +54,21 @@ export default (
   };
 
   const setActive = id => {
-    menu.setActive(id);
+    if (menu) {
+      menu.setActive(id);
+    }
   };
 
   const startUpperStroke = position => {
-    upperStrokeCanvas = createUpperStrokeCanvas(parentDOM);
-    upperStroke = [position];
-    upperStrokeCanvas.drawStroke(upperStroke);
+    if (position) {
+      upperStrokeCanvas = createUpperStrokeCanvas(parentDOM);
+      upperStroke = [position];
+      upperStrokeCanvas.drawStroke(upperStroke);
+    }
   };
 
   const noviceMove = rafThrottle(position => {
-    if (upperStrokeCanvas) {
+    if (position && upperStrokeCanvas) {
       upperStrokeCanvas.clear();
       if (position) {
         upperStroke = [upperStroke[0], position];
@@ -74,7 +80,7 @@ export default (
 
   const expertDraw = rafThrottle(stroke => {
     // FIXME: Not very efficient.
-    if (upperStrokeCanvas) {
+    if (stroke && upperStrokeCanvas) {
       upperStrokeCanvas.clear();
       upperStroke = stroke.slice();
       upperStrokeCanvas.drawStroke(upperStroke);
@@ -82,9 +88,11 @@ export default (
   });
 
   const clearUpperStroke = () => {
-    upperStrokeCanvas.remove();
-    upperStrokeCanvas = null;
-    upperStroke = null;
+    if (upperStrokeCanvas) {
+      upperStrokeCanvas.remove();
+      upperStrokeCanvas = null;
+      upperStroke = null;
+    }
   };
 
   const swapUpperStroke = () => {
@@ -120,45 +128,49 @@ export default (
   };
 
   const onNotification = notification => {
-    switch (notification.type) {
-      case 'open': {
-        // eslint-disable-next-line no-param-reassign
-        parentDOM.style.cursor = 'none';
-        if (menu) closeMenu();
-        swapUpperStroke();
-        openMenu(notification.menu, notification.center);
-        startUpperStroke(notification.center);
-        noviceMove(notification.position);
-        break;
-      }
-      case 'change': {
-        setActive((notification.active && notification.active.id) || null);
-        break;
-      }
-      case 'select':
-      case 'cancel':
-        // eslint-disable-next-line no-param-reassign
-        parentDOM.style.cursor = '';
-        if (menu) closeMenu();
-        showGestureFeedback(notification.type === 'cancel');
-        clearUpperStroke();
-        clearLowerStroke();
-        break;
-      case 'start':
-        // eslint-disable-next-line no-param-reassign
-        parentDOM.style.cursor = 'crosshair';
-        startUpperStroke(notification.position);
-        break;
-      case 'draw':
-        expertDraw(notification.stroke);
-        break;
-      case 'move':
-        noviceMove(notification.position);
-        break;
-      default:
-        throw new Error(
-          `Invalid navigation notification type: ${notification.type}`
-        );
+      switch (notification.type) {
+        case 'open': {
+          // eslint-disable-next-line no-param-reassign
+          if (isActive()) {
+            parentDOM.style.cursor = 'none';
+            if (menu) closeMenu();
+            swapUpperStroke();
+            openMenu(notification.menu, notification.center);
+            startUpperStroke(notification.center);
+            noviceMove(notification.position);
+          }
+          break;
+        }
+        case 'change': {
+          setActive((notification.active && notification.active.id) || null);
+          break;
+        }
+        case 'select':
+        case 'cancel':
+          // eslint-disable-next-line no-param-reassign
+          parentDOM.style.cursor = '';
+          if (menu) closeMenu();
+          showGestureFeedback(notification.type === 'cancel');
+          clearUpperStroke();
+          clearLowerStroke();
+          break;
+        case 'start':
+          // eslint-disable-next-line no-param-reassign
+          if (isActive()) {
+            parentDOM.style.cursor = 'crosshair';
+            startUpperStroke(notification.position);
+          }
+          break;
+        case 'draw':
+          expertDraw(notification.stroke);
+          break;
+        case 'move':
+          noviceMove(notification.position);
+          break;
+        default:
+          throw new Error(
+            `Invalid navigation notification type: ${notification.type}`
+          );
     }
   };
 

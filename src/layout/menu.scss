@@ -1,23 +1,16 @@
-$pi: 3.14159265359;
-$item-width: 6.5rem;
-$item-height: 1.5rem;
-$item-font-size: 1.5rem;
+$item-width: 10rem;
+$item-height: 3rem;
 $item-padding: .5rem;
+$item-font-size: 1rem;
 $item-background: #f2f2f2;
 $item-color: darken($item-background, 75%);
 $active-item-background: darken($item-background, 10%);
 $active-item-color: darken($active-item-background, 75%);
 $item-radius: $item-padding * 2;
-$menu-radius: 5rem;
-$center-radius: 1rem;
-$line-thickness: .5rem;
+$menu-radius: 7.5rem;
+$line-thickness: .75rem;
 $line-color: $item-background;
 $active-line-color: $active-item-background;
-$first-item-angle: 0;
-
-// Used for later calculation
-$item-total-width: $item-width + $item-padding * 2;
-$item-total-height: $item-height + $item-padding * 2;
 
 .marking-menu {
   position: absolute;
@@ -40,21 +33,22 @@ $item-total-height: $item-height + $item-padding * 2;
 	}
 	
   .marking-menu-label {
-    position: absolute;
-    border-radius: $item-radius;
-    background-color: $item-background;
-    padding: $item-padding;
-    width: $item-width;
-    height: $item-height;
-    overflow: hidden;
-    vertical-align: middle;
-    text-align: center;
-    text-overflow: ellipsis;
-    line-height: $item-height;
-    color: $item-color;
-    font-size: $item-font-size;
 		top: var(--top);
 		left: var(--left);
+    color: $item-color;
+    width: $item-width;
+    height: $item-height;
+    display: flex;
+    padding: $item-padding;
+    overflow: hidden;
+    position: absolute;
+    font-size: $item-font-size;
+    text-align: center;
+    align-items: center;
+    border-radius: $item-radius;
+    text-overflow: ellipsis;
+    justify-content: center;
+    background-color: $item-background;
   }
 
   &.active {

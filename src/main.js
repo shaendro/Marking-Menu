@@ -58,6 +58,7 @@ export const exportNotification = n => ({
  * @param {boolean} [options.notifySteps] - If true, every steps of the marking menu (include move)
  *                                          events, will be notified. Useful for logging.
  * @param {{error, info, warn, debug}} [options.log] - Override the default logger to use.
+ * @param {Function} [options.isActive] - A function determining the state of the marking menu.
  * @return {Observable} An observable on menu selections.
  */
 export default (
@@ -88,7 +89,8 @@ export default (
       // eslint-disable-next-line no-console
       warn: console.warn && console.warn.bind(console),
       debug() {}
-    }
+    },
+    isActive = () => { return true; }
   } = {}
 ) => {
   // Create the display options
@@ -138,7 +140,8 @@ export default (
     parent => createStrokeCanvas(parent, strokeCanvasOptions),
     parent => createStrokeCanvas(parent, lowerStrokeCanvasOptions),
     parent => createGestureFeedback(parent, gestureFeedbackOptions),
-    log
+    log,
+    isActive
   );
 
   // If every steps should be notified, just export connectedNavigation$.
