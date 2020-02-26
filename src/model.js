@@ -10,14 +10,16 @@ export class MMItem {
    * @param {String} id - The item's id. Required except for the root item.
    * @param {String} name - The item's name. Required except for the root item.
    * @param {Integer} angle - The item's angle. Required except for the root item.
+   * @param {Integer} width - The item's width in degrees.
    * @param {object} [options] - Some additional options.
    * @param {ItemModel} [options.parent] - The parent menu of the item.
    * @param {List<ItemModel>} [options.children] - The children of the item menu.
    */
-  constructor(id, name, angle, { parent, children } = {}) {
+  constructor(id, name, angle, width = 0, { parent, children } = {}) {
     this.id = id;
     this.name = name;
 		this.angle = angle;
+		this.width = width;
     this.children = children;
     this.parent = parent;
   }
@@ -97,7 +99,8 @@ const recursivelyCreateModelItems = (
       const mmItem = new MMItem(
         item.id == null ? stdId : item.id,
         typeof item === 'string' ? item : item.name,
-        i * angleRange,
+				i * angleRange,
+				angleRange,
         { parent }
       );
       // Add its children if any.
