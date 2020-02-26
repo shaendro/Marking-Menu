@@ -1,6 +1,6 @@
 .marking-menu(style={ left: `${center[0]}px`, top: `${center[1]}px` })
 	each item in items
-		.marking-menu-item(data-item-id=item.id data-item-angle=item.angle)
+    .marking-menu-item(data-item-id=item.id data-item-angle=item.angle)
 			svg.marking-menu-slice(style={'--rotate': `${item.angle - item.width / 2}deg`})
 				circle
-			.marking-menu-label(style={'--top': `${(Math.sin(item.angle * Math.PI / 180) * 5.75) -.75}rem`, '--left': `${(Math.cos(item.angle * Math.PI / 180) * 9.75) -3.25}rem`})=item.name
+      .marking-menu-label(style={'--top': `${(Math.sin(item.angle * Math.PI / 180) * (7.5 + 1.5)) -1.5}rem`, '--left': `${(Math.cos(item.angle * Math.PI / 180) * (7.5 + 5)) -5}rem`})=item.name

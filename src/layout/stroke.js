@@ -73,19 +73,21 @@ export default (
    * @return {undefined}
    */
   const drawStroke = stroke => {
-    ctx.save();
-    ctx.fillStyle = 'none';
-    ctx.lineJoin = 'round';
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = lineColor;
-    ctx.lineWidth = lineWidth;
-    ctx.beginPath();
-    stroke.forEach((point, i) => {
-      if (i === 0) ctx.moveTo(...point);
-      else ctx.lineTo(...point);
-    });
-    ctx.stroke();
-    ctx.restore();
+    if (stroke) {
+      ctx.save();
+      ctx.fillStyle = 'none';
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth = lineWidth;
+      ctx.beginPath();
+      stroke.forEach((point, i) => {
+        if (i === 0) ctx.moveTo(...point);
+        else ctx.lineTo(...point);
+      });
+      ctx.stroke();
+      ctx.restore();
+    }
   };
 
   /**

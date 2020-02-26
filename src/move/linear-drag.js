@@ -8,7 +8,8 @@ import {
 } from 'rxjs/operators';
 import {
   createPEventFromMouseEvent,
-  createPEventFromTouchEvent
+  createPEventFromTouchEvent,
+  createPEventFromPointerEvent
 } from './pointer-events';
 
 // Higher order observable tracking mouse drags.
@@ -26,6 +27,24 @@ export const mouseDrags = rootDOM =>
       return drag$;
     }),
     map(o => o.pipe(map((...args) => createPEventFromMouseEvent(...args))))
+  );
+
+// Higher order observable tracking pointer drags.
+export const pointerDrags = rootDOM =>
+  fromEvent(rootDOM, 'pointerdown').pipe(
+    filter(pointerEvt => { return pointerEvt.pointerType === 'pen' || pointerEvt.pointerType === 'mouse' && pointerEvt.which === 3 }),
+    map(downEvt => {
+      // Make sure we include the first pointer down event.
+      const drag$ = merge(of(downEvt), fromEvent(rootDOM, 'pointermove')).pipe(
+        takeUntil(fromEvent(rootDOM, 'pointerup')),
+        // Publish it as a behavior so that any new subscription will
+        // get the last drag position.
+        publishBehavior()
+      );
+      drag$.connect();
+      return drag$;
+    }),
+    map(o => o.pipe(map((...args) => createPEventFromPointerEvent(...args))))
   );
 
 // Higher order observable tracking touch drags.
@@ -60,7 +79,7 @@ export const touchDrags = rootDOM =>
  *                      position.
  * @param {function[]} [dragObsFactories] - factory to use to observe drags.
  */
-const watchDrags = (rootDOM, dragObsFactories = [touchDrags, mouseDrags]) =>
+const watchDrags = (rootDOM, dragObsFactories = [pointerDrags]) =>
   merge(...dragObsFactories.map(f => f(rootDOM)));
 
 export default watchDrags;

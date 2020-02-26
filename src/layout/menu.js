@@ -42,7 +42,8 @@ const createMenu = (
 
     // Set the active class.
     if (itemId || itemId === 0) {
-      getItemDom(itemId).classList.add('active');
+      const item = getItemDom(itemId);
+      if (item) item.classList.add('active');
     }
   };
 
