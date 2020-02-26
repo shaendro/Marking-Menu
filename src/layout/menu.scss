@@ -3,11 +3,12 @@ $item-height: 3rem;
 $item-padding: .5rem;
 $item-font-size: 1rem;
 $item-background: #f2f2f2;
+$menu-background: #000000;
 $item-color: darken($item-background, 75%);
 $active-item-background: darken($item-background, 10%);
 $active-item-color: darken($active-item-background, 75%);
 $item-radius: $item-padding * 2;
-$menu-radius: 7.5rem;
+$menu-radius: 12rem;
 $line-thickness: .75rem;
 $line-color: $item-background;
 $active-line-color: $active-item-background;
@@ -19,6 +20,16 @@ $active-line-color: $active-item-background;
   * {
     pointer-events: none;
   }
+}
+
+.marking-menu-background {
+	top: -$menu-radius;
+	left: -$menu-radius;
+	width: $menu-radius * 2;
+	height: $menu-radius * 2;
+	position: absolute;
+	border-radius: $menu-radius;
+	background-color: $menu-background;
 }
 
 .marking-menu-item {
@@ -33,22 +44,21 @@ $active-line-color: $active-item-background;
 	}
 
   .marking-menu-slice {
-		width: 100px;
-		height: 100px;
-    transform: rotate(-118deg);
+		top: -$menu-radius;
+    left: -$menu-radius;
+    width: $menu-radius * 2;
+    height: $menu-radius * 2;
     position: absolute;
-    top: -3.25rem;
-    left: -3.25rem;
-    transform: rotate(-112.5deg) scale(6);
+		transform: rotate(var(--rotate));
 
 		circle {
-			r: 16;
-			cx: 50;
-			cy: 50;
-			fill: yellowgreen;
-			stroke: #655;
-			stroke-width: 32;
-			stroke-dasharray: 12.5 100;
+			r: $menu-radius / 2;
+			cx: $menu-radius;
+			cy: $menu-radius;
+			fill: transparent;
+			stroke: $item-background;
+			stroke-width: $menu-radius;
+			stroke-dasharray: calc(var(--width) * #{$menu-radius} * 3.1415 / 100) calc(#{$menu-radius} * 3.1415);
 		}
 	}
 	
@@ -65,21 +75,22 @@ $active-line-color: $active-item-background;
     font-size: $item-font-size;
     text-align: center;
     align-items: center;
-    border-radius: $item-radius;
     text-overflow: ellipsis;
     justify-content: center;
-    background-color: $item-background;
   }
 
   &.active {
-    .marking-menu-label {
-      background-color: $active-item-background;
-      color: $active-item-color;
-      font-weight: bolder;
-    }
-
     .marking-menu-line {
       background-color: $active-line-color;
+		}
+		
+		.marking-menu-slice circle {
+			stroke: $active-item-background;
+		}
+
+    .marking-menu-label {
+      color: $active-item-color;
+      font-weight: bolder;
     }
   }
 }
