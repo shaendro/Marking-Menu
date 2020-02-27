@@ -15,7 +15,6 @@ import rafThrottle from 'raf-throttle';
  * movements.
  * @param {Function} createGestureFeedback - Create gesture feedback.
  * @param {{error}} log - Logger.
- * @param {Function} isActive - A function determining the state of the marking menu.
  * @return {Observable} `navigation$` with menu opening and closing side effects.
  */
 export default (
@@ -25,8 +24,7 @@ export default (
   createUpperStrokeCanvas,
   createLowerStrokeCanvas,
   createGestureFeedback,
-  log,
-  isActive
+  log
 ) => {
   // The menu object.
   let menu = null;
@@ -131,14 +129,12 @@ export default (
       switch (notification.type) {
         case 'open': {
           // eslint-disable-next-line no-param-reassign
-          if (isActive()) {
-            parentDOM.style.cursor = 'none';
-            if (menu) closeMenu();
-            swapUpperStroke();
-            openMenu(notification.menu, notification.center);
-            startUpperStroke(notification.center);
-            noviceMove(notification.position);
-          }
+					parentDOM.style.cursor = 'none';
+					if (menu) closeMenu();
+					swapUpperStroke();
+					openMenu(notification.menu, notification.center);
+					startUpperStroke(notification.center);
+					noviceMove(notification.position);
           break;
         }
         case 'change': {
@@ -156,10 +152,8 @@ export default (
           break;
         case 'start':
           // eslint-disable-next-line no-param-reassign
-          if (isActive()) {
-            parentDOM.style.cursor = 'crosshair';
-            startUpperStroke(notification.position);
-          }
+					parentDOM.style.cursor = 'crosshair';
+					startUpperStroke(notification.position);
           break;
         case 'draw':
           expertDraw(notification.stroke);
