@@ -20,8 +20,11 @@ export const createPEventFromMouseEvent = mouseEvt => ({
 });
 
 // Create a custom pointer from a pointer event.
-export const createPEventFromPointerEvent = pointerEvt => ({
-  originalEvent: pointerEvt,
-  position: [pointerEvt.offsetX, pointerEvt.offsetY],
-  timeStamp: pointerEvt.timeStamp
-});
+export const createPEventFromPointerEvent = (rootDOM, pointerEvt) => {
+  const bcr = rootDOM.getBoundingClientRect();
+  return ({
+    originalEvent: pointerEvt,
+    position: [pointerEvt.clientX - bcr.left, pointerEvt.clientY - bcr.top],
+    timeStamp: pointerEvt.timeStamp
+  });
+}

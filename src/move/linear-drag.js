@@ -35,8 +35,8 @@ export const pointerDrags = rootDOM =>
     filter(pointerEvt => { return pointerEvt.pointerType === 'pen' || pointerEvt.pointerType === 'mouse' && pointerEvt.which === 3 }),
     map(downEvt => {
       // Make sure we include the first pointer down event.
-      const drag$ = merge(of(downEvt), fromEvent(rootDOM, 'pointermove')).pipe(
-        takeUntil(fromEvent(rootDOM, 'pointerup')),
+      const drag$ = merge(of(downEvt), fromEvent(document, 'pointermove')).pipe(
+        takeUntil(fromEvent(document, 'pointerup')),
         // Publish it as a behavior so that any new subscription will
         // get the last drag position.
         publishBehavior()
@@ -44,7 +44,7 @@ export const pointerDrags = rootDOM =>
       drag$.connect();
       return drag$;
     }),
-    map(o => o.pipe(map((...args) => createPEventFromPointerEvent(...args))))
+    map(o => o.pipe(map((...args) => createPEventFromPointerEvent(rootDOM, ...args))))
   );
 
 // Higher order observable tracking touch drags.
