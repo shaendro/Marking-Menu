@@ -1,6 +1,6 @@
 {
   "name": "@shaendro/marking-menu",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "Marking Menu Implementation in JavaScript.",
   "main": "marking-menu.js",
   "files": [

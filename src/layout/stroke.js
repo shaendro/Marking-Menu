@@ -23,16 +23,17 @@ export default (
   }
 ) => {
   // Create the canvas.
-  const { width, height } = parent.getBoundingClientRect();
+  const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+  const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
   const canvas = doc.createElement('canvas');
-  canvas.width = width / ptSize;
-  canvas.height = height / ptSize;
+  canvas.width = vw / ptSize;
+  canvas.height = vh / ptSize;
   Object.assign(canvas.style, {
-    position: 'absolute',
+    position: 'fixed',
     left: 0,
     top: 0,
-    width: `${width}px`,
-    height: `${height}px`,
+    width: '100vw',
+    height: '100vh',
     'pointer-events': 'none'
   });
   parent.appendChild(canvas);
@@ -47,6 +48,10 @@ export default (
    * @return {undefined}
    */
   const drawPoint = ([x, y]) => {
+    const bcr = parent.getBoundingClientRect();
+    x += bcr.left;
+    y += bcr.top;
+
     ctx.save();
     ctx.strokeStyle = 'none';
     ctx.fillStyle = pointColor;
@@ -63,7 +68,7 @@ export default (
    * @return {undefined}
    */
   const clear = () => {
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   };
 
   /**
@@ -82,8 +87,12 @@ export default (
       ctx.lineWidth = lineWidth;
       ctx.beginPath();
       stroke.forEach((point, i) => {
-        if (i === 0) ctx.moveTo(...point);
-        else ctx.lineTo(...point);
+        const bcr = parent.getBoundingClientRect();
+        const x = point[0] + bcr.left;
+        const y = point[1] + bcr.top;
+
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       });
       ctx.stroke();
       ctx.restore();
