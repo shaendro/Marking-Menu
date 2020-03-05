@@ -40,11 +40,8 @@ export const expertToNoviceSwitchHOO = (drag$, model, initStroke, options) =>
     take(1),
     map(evt => {
       // Look for the furthest menu (not leaf).
-      const menu = recognize(evt.stroke, model, {
-        maxDepth: -1,
-        requireMenu: true
-      });
-      if (!menu || menu.isRoot()) {
+			const menu = recognize(evt.stroke, model, { requireMenu: true });
+      if (!menu) {
         return of({ ...evt, type: 'cancel' });
       }
       // Start a novice navigation from there.

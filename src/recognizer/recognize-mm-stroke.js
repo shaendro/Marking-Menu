@@ -115,7 +115,7 @@ const recognizeMMStroke = (
     // Change again the representation of the segment to include its length but not its
     // its points anymore.
     .map(seg => ({ angle: segmentAngle(...seg.points), length: seg.length }));
-  const item = findMMItem(model, segments, maxDepth);
+	const item = findMMItem(model, segments, maxDepth);
   if (requireLeaf) {
     return item && item.isLeaf() ? item : null;
   }
